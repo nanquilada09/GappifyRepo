@@ -1,0 +1,5 @@
+*** Variables ***
+${Workflow_Locator}    link=Workflow
+${ChooseFile_Locator}    name=users_csv
+${DueDate_Locator}    name=due_date
+${GroupName_Locator}    name=group_name

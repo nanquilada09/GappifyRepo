@@ -1,0 +1,87 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_Locators.txt
+Resource          ../../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_SmartForm_Locators.txt
+
+*** Keywords ***
+Filter and Validate Transaction Name
+    [Arguments]    ${transactionName}
+    Wait Until Element Is Visible    ${TransactionName_Locator}    60s
+    Clear Element Text    ${TransactionName_Locator}
+    Input Text    ${TransactionName_Locator}    ${transactionName}
+    Wait Until Element Is Visible    ${TransactionNameTableResult_Locator}
+    Sleep    5s
+    ${transactionName}    Get Text    ${TransactionNameTableResult_Locator}
+    Should Be Equal    ${transactionName}    ${transactionName}
+
+New Transaction
+    Wait Until Element Is Visible    ${NewTransaction_Locator}
+    Click Element    ${NewTransaction_Locator}
+
+Select Form
+    [Arguments]    ${form}
+    Wait Until Element Is Visible    ${SelectForm_Locator}    15s
+    Select From List By Label    ${SelectForm_Locator}    ${form}
+    Wait Until Element Is Visible    ${Workflow_Locator}
+
+Select Name
+    [Arguments]    ${date}
+    Wait Until Element Is Visible    ${SelectName_Locator}    15s
+    Select From List By Label    ${SelectName_Locator}    ${date}
+
+Enter Group Name
+    [Arguments]    ${groupName}
+    Input Text    ${GroupName_Locator}    ${groupName}
+    Wait Until Element Is Visible    ${DueDate_Locator}
+
+Close Record
+    Wait Until Element Is Visible    ${CloseRecord_Locator}
+    Click Element    ${CloseRecord_Locator}
+    Wait Until Element Is Visible    ${TransactionName_Locator}    60s
+
+Submit Record
+    [Arguments]    ${message}
+    Wait Until Element Is Visible    ${Submit_Locator}
+    Click Element    ${Submit_Locator}
+    Wait until page contains    ${message}    30s
+    Sleep    3s
+
+Validate Workstep Status
+    [Arguments]    ${workStatus}
+    ${status}    Get Text    ${TransactionStatus_Locator}
+    Should Be Equal    ${workStatus}    ${status}
+    Log    Successfully validate working status: ${workStatus}
+    Capture Page Screenshot
+
+Open Transaction ID
+    Wait Until Element Is Visible    xpath=//table[@id="tableTxnData"]/tbody/tr/td[2]/a[1]
+    Click Element    xpath=//table[@id="tableTxnData"]/tbody/tr/td[2]/a[1]
+    Wait Until Element Is Visible    ${Workflow_Locator}
+
+Validate Accrual Amount
+    [Arguments]    ${accrualAmount}
+    Wait Until Element Is Visible    xpath=//td[text()="Original"]/following-sibling::td[7]    30s
+    ${amount}    Get Text    xpath=//td[text()="Original"]/following-sibling::td[7]
+    Should Be Equal As Strings    ${amount}    ${accrualAmount}
+    Log    Successfully Validated Accrual Amount: ${accrualAmount}
+
+Validate PO Number
+    [Arguments]    ${poNumber}
+    Wait Until Element Is Visible    xpath=//td[text()="Original"]/following-sibling::td[9]    30s
+    ${po}    Get Text    xpath=//td[text()="Original"]/following-sibling::td[9]
+    Should Be Equal As Strings    ${po}    ${poNumber}
+    Log    Successfully Validated PO Number: ${poNumber}
+
+Validate Accrual Description
+    [Arguments]    ${accrualDesc}
+    Wait Until Element Is Visible    xpath=//td[text()="Original"]/following-sibling::td[8]    30s
+    ${desc}    Get Text    xpath=//td[text()="Original"]/following-sibling::td[8]
+    Should Be Equal As Strings    ${desc}    ${accrualDesc}
+    Log    Successfully Validated Accrual Description: ${accrualDesc}
+
+Validate Currency
+    [Arguments]    ${currency}
+    Wait Until Element Is Visible    xpath=//td[text()="Original"]/following-sibling::td[10]    30s
+    ${curr}    Get Text    xpath=//td[text()="Original"]/following-sibling::td[10]
+    Should Be Equal As Strings    ${curr}    ${currency}
+    Log    Successfully Validated Currency: ${currency}

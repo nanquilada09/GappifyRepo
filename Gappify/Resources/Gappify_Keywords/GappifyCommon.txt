@@ -1,0 +1,32 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Library           DateTime
+Resource          ../Gmail_Keywords/GmailCommon.txt
+Resource          ../../Locators/Gmail_Locators/Gmail_Locators.txt
+Resource          VendorAccrual_Keywords/VendorAccrual_Keyword.txt
+Resource          VendorAccrual_Keywords/VendorAccrual_EmailForm_Keyword.txt
+Resource          VendorAccrual_Keywords/VendorAccrual_SmartForm_Keyword.txt
+Resource          ../../Locators/Gappify_Locators/HomePage_Locators.txt
+Resource          ../../Locators/Gappify_Locators/Login_Locators.txt
+Resource          ../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_Locators.txt
+Resource          ../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_SmartForm_Locators.txt
+Resource          ../../Test Data/Login_Details.txt
+
+*** Keywords ***
+Login to Gappify
+    [Arguments]    ${username}    ${password}
+    Open Browser    ${HOST}    chrome    alias=main
+    Maximize Browser Window
+    Wait Until Element Is Visible    ${Username_Locator}    30s
+    Input Text    ${Username_Locator}    ${username}
+    Input Text    ${Password_Locator}    ${password}
+    Click Button    ${SignButton_Locator}
+    Wait Until Element Is Visible    ${HomeMenu_Locator}    30s
+
+Navigate to Side Bar Menu
+    [Arguments]    @{menu}
+    ${size}    Get Length    ${menu}
+    : FOR    ${counter}    IN RANGE    ${size}
+    \    Wait Until Element Is Visible    link=@{menu}[${counter}]
+    \    Click Element    link=@{menu}[${counter}]

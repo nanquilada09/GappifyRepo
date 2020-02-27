@@ -1,0 +1,37 @@
+*** Settings ***
+Resource          ../../Resources/Gappify_Keywords/GappifyCommon.txt
+
+*** Test Cases ***
+Create Transaction
+    [Tags]
+    ${date}    Get Current Date
+    ${date}    Convert Date    ${date}    result_format=%Y-%m
+    ${text}    Generate Random String
+    Login to Gappify    ${USERNAME}    ${PASSWORD}
+    Navigate To Side Bar Menu    GL    Vendor Accrual
+    New Transaction
+    Select Form    Smart Form
+    Select Name    ${date}
+    Enter Group Name    ${text}
+    Enter Due Date    2020-02-29
+    Upload File    C:\\Gappify\\Test Data\\CSV\\Gappify DefaultVendor - Example File Import.csv
+    Submit Record    Workstep Submitted
+    Close Record
+    Filter and Validate Transaction Name    ${date} ${text}
+    Validate Workstep Status    Workstep 2 of 3
+    Login to Gmail    ${USERNAME}    ${PASSWORD}
+    Search Email    Requested Action from Auto Demo Co.    test
+    Enter Accrual Amount    10.00
+    Enter Accrual Description    This is just a test
+    Enter PO Number    54321
+    Select Currency    USD
+    Submit Form    This transaction has been submitted
+    Switch Browser    main
+    Filter and Validate Transaction Name    ${date} ${text}
+    Validate Workstep Status    Workstep 3 of 3
+    Open Transaction ID
+    Validate Accrual Amount    10.00
+    Validate Accrual Description    This is just a test
+    Validate PO Number    54321
+    Validate Currency    USD
+    [Teardown]    Close All Browsers

@@ -1,0 +1,39 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../../Locators/Gmail_Locators/Gmail_Locators.txt
+Resource          ../../Test Data/Login_Details.txt
+
+*** Keywords ***
+Login to Gmail
+    [Arguments]    ${username}    ${password}
+    Open Browser    ${GMAIL_HOST}    chrome    alias=gmail
+    Maximize Browser Window
+    Comment    Wait Until Page Contains Element    ${SigninToGmail_Locator}    60s
+    Comment    Wait Until Keyword Succeeds    30s    3s    Click Link    ${SigninToGmail_Locator}
+    Comment    Switch Window    Gmail
+    Wait Until Element Is Visible    ${EmailUser_Locator}
+    Input Text    ${EmailUser_Locator}    ${username}
+    Wait Until Element Is Visible    ${EmailUserNext_Locator}
+    Click Element    ${EmailUserNext_Locator}
+    Wait Until Element Is Visible    ${EmailPassword_Locator}
+    Input Text    ${EmailPassword_Locator}    ${password}
+    Click Element    xpath=//div[@id="passwordNext"]
+    Wait Until Element Is Visible    ${SearchBox_Locator}    60s
+
+Search Email
+    [Arguments]    ${emailSubject}    ${validationData}
+    : FOR    ${counter}    IN RANGE    1    50
+    \    Wait Until Element Is Visible    ${SearchBox_Locator}    60s
+    \    Clear Element Text    ${SearchBox_Locator}
+    \    Input Text    ${SearchBox_Locator}    ${emailSubject}
+    \    Click Element    //button[@aria-label="Search Mail"]
+    \    Wait Until Element Is Visible    //div[2]/div[4]/div[2]/div/table/tbody/tr[1]/td[6]/div/div/div[2]/span/span[text()="${emailSubject}"]    15s
+    \    Click Element    //div[2]/div[4]/div[2]/div/table/tbody/tr[1]/td[6]/div/div/div[2]/span/span[text()="${emailSubject}"]
+    \    ${status}    Run Keyword And Return Status    Wait Until Element Is Visible    xpath=//span[contains(text(),"(0 minutes ago)")]    5s
+    \    Run Keyword If    '${status}' == 'False'    Log    Will search again for email with 0 minutes history.
+    \    Run Keyword If    '${status}' == 'True'    Exit For Loop
+    Wait Until Element Is Visible    xpath=//span[contains(text(),"(0 minutes ago)")]/following::div[@aria-label="Show trimmed content"]/img[1]
+    Click Element    xpath=//span[contains(text(),"(0 minutes ago)")]/following::div[@aria-label="Show trimmed content"]/img[1]
+    Wait Until Element Is Visible    xpath=//span[contains(text(),"(0 minutes ago)")]/following::a[text()="Form Link"][1]    15s
+    Click Element    xpath=//span[contains(text(),"(0 minutes ago)")]/following::a[text()="Form Link"][1]
+    Switch Window    locator=NEW

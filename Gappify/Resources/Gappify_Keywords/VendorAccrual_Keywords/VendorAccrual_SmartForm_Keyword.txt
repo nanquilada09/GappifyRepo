@@ -1,0 +1,13 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_SmartForm_Locators.txt
+
+*** Keywords ***
+Upload File
+    [Arguments]    ${fileLocation}
+    Choose File    ${ChooseFile_Locator}    ${fileLocation}
+
+Enter Due Date
+    [Arguments]    ${dueDate}
+    Input Text    ${DueDate_Locator}    ${dueDate}
+    Press Keys    ${DueDate_Locator}    //09

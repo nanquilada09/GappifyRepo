@@ -1,0 +1,10 @@
+*** Settings ***
+Resource          ../Resources/GappifyCommon.txt
+
+*** Test Cases ***
+Test
+    Login to Gappify    ${USERNAME}    ${PASSWORD}
+    ${transactionID}    Get Text    ${TransactionID_Locator}
+    Log    This is transaction ID: ${transactionID}
+    Capture Page Screenshot
+    [Teardown]    Close All Browsers

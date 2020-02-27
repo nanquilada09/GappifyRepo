@@ -1,0 +1,9 @@
+*** Variables ***
+${CloseRecord_Locator}    xpath=//button[text()="Close Tab"]
+${NewTransaction_Locator}    xpath=//button[text()="New Transaction"]
+${SelectForm_Locator}    id=gaap_form_id
+${Submit_Locator}    xpath=//input[@value="Submit "]
+${SelectName_Locator}    id=name
+${TransactionName_Locator}    name=1_search_2
+${TransactionNameTableResult_Locator}    xpath=//table[@id="tableTxnData"]/tbody/tr/td[3]
+${TransactionStatus_Locator}    xpath=//table[@id="tableTxnData"]/tbody/tr/td[4]

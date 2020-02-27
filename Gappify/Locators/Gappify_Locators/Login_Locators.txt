@@ -1,0 +1,4 @@
+*** Variables ***
+${Username_Locator}    name=username
+${Password_Locator}    name=password
+${SignButton_Locator}    xpath=//input[@value="Log in"]

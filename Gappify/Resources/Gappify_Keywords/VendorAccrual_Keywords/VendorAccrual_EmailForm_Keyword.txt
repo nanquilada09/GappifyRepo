@@ -1,0 +1,36 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_EmailForm_Locatorss.txt
+
+*** Keywords ***
+Enter Accrual Amount
+    [Arguments]    ${amount}
+    Wait until Element is Visible    ${AccrualAmount_Locator}    30s
+    Click Element    ${AccrualAmount_Locator}
+    Input Text    dom=document.activeElement    ${amount}
+
+Enter Accrual Description
+    [Arguments]    ${accrualDescription}
+    Wait Until Element Is Visible    ${AccrualDescription_Locator}    30s
+    Click Element    ${AccrualDescription_Locator}
+    Input Text    dom=document.activeElement    ${accrualDescription}
+
+Enter PO Number
+    [Arguments]    ${poNumber}
+    Wait until Element is visible    ${PONumber_Locator}    30s
+    Click Element    ${PONumber_Locator}
+    Input Text    dom=document.activeElement    ${poNumber}
+
+Select Currency
+    [Arguments]    ${currency}
+    Wait Until Element Is Visible    ${Currency_Locator}    30s
+    Click Element    ${Currency_Locator}
+    Select From List By Value    xpath=//div[@colid="field_3"][contains(@class,"inline-editing")]/following-sibling::div[2]/div[1]/select[1]    ${currency}
+
+Submit Form
+    [Arguments]    ${message}
+    Wait Until Element Is Visible    ${SubmitForm_Locator}    30s
+    Click Element    ${SubmitForm_Locator}
+    Wait Until Page Contains    ${message}    30s
+    Capture Page Screenshot
+    Close Window

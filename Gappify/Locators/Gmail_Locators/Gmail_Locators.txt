@@ -1,0 +1,7 @@
+*** Variables ***
+${SigninToGmail_Locator}    xpath=//*[text()="Gmail"]/following::div[4]/ul/li[2]
+${EmailUser_Locator}    xpath=//input[@type="email"]
+${EmailPassword_Locator}    xpath=//input[@type="password"]
+${SearchBox_Locator}    xpath=//input[@placeholder="Search mail"]
+${EmailUserNext_Locator}    xpath=//input[@type="email"]/following::span[2]
+${EmailPasswordNext_Locator}    xpath=//div[@id="passwordNext"]

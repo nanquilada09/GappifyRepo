@@ -1,0 +1,6 @@
+*** Variables ***
+${AccrualAmount_Locator}    xpath=//div[@colid="field_1"][contains(@class,"inline-editing")]
+${AccrualDescription_Locator}    xpath=//div[@colid="field_3"][contains(@class,"inline-editing")]
+${PONumber_Locator}    xpath=//div[@colid="field_3"][contains(@class,"inline-editing")]/following-sibling::div[1]
+${Currency_Locator}    xpath=//div[@colid="field_3"][contains(@class,"inline-editing")]/following-sibling::div[2]
+${SubmitForm_Locator}    xpath=//button[text()="Submit"]

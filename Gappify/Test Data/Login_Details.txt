@@ -1,0 +1,5 @@
+*** Variables ***
+${HOST}           https://qas.gappify.com
+${USERNAME}       Aut0Dem02020@gmail.com
+${PASSWORD}       Dem0Aut02020
+${GMAIL_HOST}     https://accounts.google.com/AccountChooser?service=mail&continue=https://mail.google.com/mail/
