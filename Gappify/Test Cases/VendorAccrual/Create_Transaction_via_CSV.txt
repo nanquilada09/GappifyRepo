@@ -2,36 +2,63 @@
 Resource          ../../Resources/Gappify_Keywords/GappifyCommon.txt
 
 *** Test Cases ***
-Create Transaction
+VDAC_0042
     [Tags]
-    ${date}    Get Current Date
-    ${date}    Convert Date    ${date}    result_format=%Y-%m
-    ${text}    Generate Random String
+    Initiate Data
     Login to Gappify    ${USERNAME}    ${PASSWORD}
-    Navigate To Side Bar Menu    GL    Vendor Accrual
+    Navigate To Side Bar Menu    ${GL}    ${VendorAccrual}
     New Transaction
-    Select Form    Smart Form
+    Select Form    ${SmartForm}
     Select Name    ${date}
     Enter Group Name    ${text}
-    Enter Due Date    2020-02-29
-    Upload File    C:\\Gappify\\Test Data\\CSV\\Gappify DefaultVendor - Example File Import.csv
-    Submit Record    Workstep Submitted
+    Enter Due Date    ${currentDate}
+    Upload File    Gappify DefaultVendor - Example File Import.csv
+    Submit Record    ${WorkStepSubmitted}
     Close Record
     Filter and Validate Transaction Name    ${date} ${text}
-    Validate Workstep Status    Workstep 2 of 3
+    Validate Workstep Status    ${WorkStatus2of3}
     Login to Gmail    ${USERNAME}    ${PASSWORD}
-    Search Email    Requested Action from Auto Demo Co.    test
-    Enter Accrual Amount    10.00
-    Enter Accrual Description    This is just a test
-    Enter PO Number    54321
-    Select Currency    USD
+    Search Email    Requested Action from Auto Demo Co.
+    Enter Accrual Amount    ${accrualAmount}
+    Enter Accrual Description    ${accrualDescription}
+    Enter PO Number    ${poNumber}
+    Select Currency    ${currency}
     Submit Form    This transaction has been submitted
     Switch Browser    main
     Filter and Validate Transaction Name    ${date} ${text}
-    Validate Workstep Status    Workstep 3 of 3
+    Validate Workstep Status    ${WorkStatus3of3}
     Open Transaction ID
-    Validate Accrual Amount    10.00
-    Validate Accrual Description    This is just a test
-    Validate PO Number    54321
-    Validate Currency    USD
+    Validate Accrual Amount    ${accrualAmount}
+    Validate Accrual Description    ${accrualDescription}
+    Validate PO Number    ${poNumber}
+    Validate Currency    ${currency}
+    Comment    Sleep    10s
+    Comment    Wait until Element is Visible    //td[text()="Original"]/parent::tr[1]/td[1]/a[3][@title="History"]/i
+    Comment    Wait Until Keyword Succeeds    30s    2s    Click Element    //td[text()="Original"]/parent::tr[1]/td[1]/a[3][@title="History"]/i
+    Comment    Wait Until Element Is Visible    xpath=//td[text()="PO #"]/following-sibling::td[1]
+    Comment    ${poNum}    Get Text    xpath=//td[text()="PO #"]/following-sibling::td[1]
+    Comment    Should Be Equal As Strings    ${poNum}    ${poNumber}
+    Comment    Capture Page Screenshot
+    Comment    Wait Until Element Is Visible    xpath=//td[text()="Currency"]/following-sibling::td[1]
+    Comment    ${curr}    Get Text    xpath=//td[text()="Currency"]/following-sibling::td[1]
+    Comment    Should Be Equal As Strings    ${curr}    ${currency}
+    Capture Page Screenshot
     [Teardown]    Close All Browsers
+
+*** Keywords ***
+Initiate Data
+    ${date}    Get Current Date
+    ${currentDate}    Convert Date    ${date}    result_format=%Y-%m-%d
+    ${date}    Convert Date    ${date}    result_format=%Y-%m
+    ${text}    Generate Random String
+    ${accrualAmount}    Set Variable    10.00
+    ${currency}    Set Variable    USD
+    ${accrualDescription}    Set Variable    ${text}
+    ${poNumber}    Generate Random String    6    [NUMBERS]
+    Set Global Variable    ${text}
+    Set Global Variable    ${currentDate}
+    Set Global Variable    ${date}
+    Set Global Variable    ${currency}
+    Set Global Variable    ${poNumber}
+    Set Global Variable    ${accrualAmount}
+    Set Global Variable    ${accrualDescription}

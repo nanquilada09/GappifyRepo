@@ -1,0 +1,74 @@
+*** Settings ***
+Library           Selenium2Library
+Library           String
+Resource          ../../Resources/Gappify_Keywords/GappifyCommon.txt
+
+*** Test Cases ***
+Test
+    [Documentation]    a. As soon as transaction is submitted successfully, ensure that all NLU's from WS1 received their email notifications.
+    ...    b. Confirm that the customer logo, name of the LU, due dates and subject text are all correct.
+    ${transactionName}    Generate Random String    10    [UPPER][NUMBERS]
+    Login to Gappify    qaglteam    q120GPFY4life
+    Wait Until Element Is Visible    link=AP
+    Click Element    link=AP
+    Wait Until Element Is Visible    link=Vendor Setup
+    Click Element    link=Vendor Setup
+    Wait Until Element Is Visible    link=App Home
+    Wait Until Element Is Visible    xpath=//button[text()="New Transaction"]
+    Click Button    xpath=//button[text()="New Transaction"]
+    Wait Until Element Is Visible    id=gaap_form_id
+    Select From List By Label    id=gaap_form_id    Master Vendor Form (Wire/ACH)
+    Wait Until Element Is Visible    link=Workflow
+    Input Text    id=name    ${transactionName}
+    Input Text    xpath=//input[@data-field_name="g_Netsuite_Vendor_Name"]    Test Vendor 123
+    Select From List By Label    xpath=//select[@data-field_name="g_Subsidiary"]    RPX Corporation: REIN
+    Select From List By Label    id=irs_form_type    Form W-8BEN (non-US individuals)
+    Input Text    id=external_email    Aut0Dem02020@gmail.com
+    Wait Until Keyword Succeeds    30s    3s    Click Element    xpath=//input[@value="Submit "]
+    Wait Until Element Is Visible    xpath=//h2[text()="Workstep Submitted"]
+    Sleep    2s
+    Click Element    xpath=//button[text()="Close Tab"]
+    Sleep    2s
+    Wait Until Element Is Visible    xpath=//input[@placeholder="Transaction Name"]
+    Input Text    xpath=//input[@placeholder="Transaction Name"]    ${transactionName}
+    Sleep    4s
+    Wait Until Element Is Visible    xpath=//table[@id="tableTxnData"]/tbody/tr/td[3]
+    ${transactName}    Get Text    xpath=//table[@id="tableTxnData"]/tbody/tr/td[3]
+    Should Be Equal    ${transactName}    ${transactionName}
+    ${workStatus}    Get Text    xpath=//table[@id="tableTxnData"]/tbody/tr/td[4]
+    Should Be Equal    ${workStatus}    Workstep 2 of 4
+    Wait Until Element Is Visible    xpath=//table[@id="tableTxnData"]/tbody/tr/td[1]/a[@title="Passback"][@data-transaction_name="${transactionName}"]
+    Capture Page Screenshot
+    Login to Gmail    ${USERNAME}    ${PASSWORD}
+    Search Email    Requested Action from Morgan Stanley
+    Wait until Element is Visible    id=hsEmbeddedFrame    120s
+    Select Frame    id=hsEmbeddedFrame
+    Wait until Element is Visible    xpath=//span[text()="OK"]    120s
+    Click Element    xpath=//span[text()="OK"]
+    Sleep    2s
+    Wait Until Element Is Enabled    xpath=//span[text()="Get Started"]
+    Click Element    xpath=//span[text()="Get Started"]
+    Sleep    4s
+    Wait Until Element Is Visible    //div[@data-qa-ref="signature-input"]
+    Click Element    //div[@data-qa-ref="signature-input"]
+    Wait Until Element Is Visible    xpath=//span[text()="Type it in"]    30s
+    Click Element    xpath=//span[text()="Type it in"]
+    Wait Until Element Is Visible    id=typedSignatureInput    30s
+    Clear Element Text    id=typedSignatureInput
+    Input Text    id=typedSignatureInput    ${USERNAME}
+    Click Element    xpath=//span[text()="Insert "]
+    Wait Until Element Is Visible    xpath=//div[@data-qa-ref="signature-input"]/img[1]
+    Wait Until Element Is Visible    xpath=//span[text()="Continue"]
+    Click Element    xpath=//span[text()="Continue"]
+    Sleep    2s
+    Wait until Element is visible    xpath=//span[text()="I agree"]    30s
+    Click Element    xpath=//span[text()="I agree"]
+    Wait Until Element Is Visible    xpath=//span[text()="Thanks for submitting your document!"]    30s
+    Click Element    xpath=//span[text()="Close"]
+    Unselect Frame
+    Sleep    3s
+    Wait Until Element Is Visible    xpath=//button[text()="Submit"]    30s
+    Click Element    xpath=//button[text()="Submit"]
+    Wait Until Page Contains    This transaction has been submitted
+    Switch Browser    main
+    [Teardown]

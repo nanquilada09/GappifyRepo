@@ -21,7 +21,7 @@ Login to Gmail
     Wait Until Element Is Visible    ${SearchBox_Locator}    60s
 
 Search Email
-    [Arguments]    ${emailSubject}    ${validationData}
+    [Arguments]    ${emailSubject}
     : FOR    ${counter}    IN RANGE    1    50
     \    Wait Until Element Is Visible    ${SearchBox_Locator}    60s
     \    Clear Element Text    ${SearchBox_Locator}

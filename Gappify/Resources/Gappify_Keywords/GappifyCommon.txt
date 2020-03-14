@@ -12,6 +12,9 @@ Resource          ../../Locators/Gappify_Locators/Login_Locators.txt
 Resource          ../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_Locators.txt
 Resource          ../../Locators/Gappify_Locators/VendorAccrual_Locators/VendorAccrual_SmartForm_Locators.txt
 Resource          ../../Test Data/Login_Details.txt
+Resource          ../../Test Data/SideBarMenu_Details.txt
+Resource          ../../Test Data/WorkStatus_Details.txt
+Resource          ../../Test Data/FormTypes_Details.txt
 
 *** Keywords ***
 Login to Gappify

@@ -1,5 +1,3 @@
 *** Variables ***
 ${TransactionID_Locator}    xpath=//th[text()="Transaction #"]/following::td[1]/a[1]
 ${HomeMenu_Locator}    link=Home
-${GL_Menu}        link=GL
-${VendorAccrual_Menu}    link=Vendor Accrual

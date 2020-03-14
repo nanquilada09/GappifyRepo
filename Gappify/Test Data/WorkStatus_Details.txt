@@ -1,0 +1,4 @@
+*** Variables ***
+${WorkStatus2of3}    Workstep 2 of 3
+${WorkStatus3of3}    Workstep 3 of 3
+${WorkStepSubmitted}    Workstep Submitted

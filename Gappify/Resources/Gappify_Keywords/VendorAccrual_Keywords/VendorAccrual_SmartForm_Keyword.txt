@@ -4,8 +4,8 @@ Resource          ../../../Locators/Gappify_Locators/VendorAccrual_Locators/Vend
 
 *** Keywords ***
 Upload File
-    [Arguments]    ${fileLocation}
-    Choose File    ${ChooseFile_Locator}    ${fileLocation}
+    [Arguments]    ${fileName}
+    Choose File    ${ChooseFile_Locator}    C:\\Gappify\\Test Data\\CSV\\${fileName}
 
 Enter Due Date
     [Arguments]    ${dueDate}
